@@ -4,6 +4,10 @@ app.get('/',(req, res)=>{
     res.send ('hello word')
 });
 
+app.get('/admin', (req, res) => {
+    res.status(401).send('Gak boleh masuk! ELO BUKAN MOMAA!!');
+});
+
 app.get('/say:moma', (req, res) => {
     res.send ('ELO MOMAA!!')
 });
