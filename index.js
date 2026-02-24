@@ -4,7 +4,7 @@ app.get('/',(req, res)=>{
     res.send ('hello word')
 });
 
-app.get('/admin', (req, res) => {
+app.get('/mima', (req, res) => {
     res.status(401).send('Gak boleh masuk! ELO BUKAN MOMAA!!');
 });
 
