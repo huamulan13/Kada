@@ -47,4 +47,42 @@ router.post('/', async (req, res, next) => {
     }
 });
 
+router.put('/:id', async (req, res, next) => {
+    const { id } = req.params;
+    const { title, content } = req.body;
+
+    try {
+        // findByIdAndUpdate langsung mencari dan memperbarui data
+        const updatedPost = await Post.findByIdAndUpdate(
+            id, 
+            { title, content }, 
+            { new: true, runValidators: true } 
+        );
+
+        if (!updatedPost) {
+            return res.status(404).json({ message: "Post tidak ditemukan untuk diupdate" });
+        }
+
+        res.json(updatedPost);
+    } catch (e) {
+        next(e);
+    }
+});
+
+router.delete('/:id', async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const deletedPost = await Post.findByIdAndDelete(id);
+
+        if (!deletedPost) {
+            return res.status(404).json({ message: "Post tidak ditemukan untuk dihapus" });
+        }
+
+        res.json({ message: "Post berhasil dihapus", data: deletedPost });
+    } catch (e) {
+        next(e);
+    }
+});
+
 export default router;
