@@ -5,9 +5,17 @@ import cors from 'cors';
 import { Post } from './models/index.js'; 
 
 
-
-mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/?appName=Cluster0');
+const connectDB = async () => {
+  try{
+    await mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/?appName=Cluster0');
+  }catch(e){
+    console.log('error message:', e.message);
+    process.exit(1);
+  }
+}
+connectDB();
 const app = express();
+
 
 app.use(express.json()); 
 
