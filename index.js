@@ -45,6 +45,8 @@ app.listen(3000, () => {
     console.log('Server jalan di http://localhost:3000');
 });
 
+export default app;
+
 //import express from 'express';
 //import noteRouter from './routes/notes.js';
 
