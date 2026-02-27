@@ -1,10 +1,5 @@
-import { Schema } from 'mongoose';
-
-const PostSchema = new Schema({
+const noteSchema = new mongoose.Schema({
   title: String,
   content: String,
-}, {
-  timestamps: true,
-});
-
-export default PostSchema;
+  author: String, // Tambahkan baris ini
+}, { timestamps: true });
