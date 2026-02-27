@@ -33,6 +33,8 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', async (req, res, next) => {
   const { title, content, author } = req.body;
+  const newNote = await Post.create({ title, content, author});
+  res.status(201).json(newNote);
 
   if (!title || !content || !author) {
     return res.status(400).json({
@@ -60,6 +62,11 @@ router.post('/', async (req, res, next) => {
 router.put('/:id', async (req, res, next) => {
   const { id } = req.params;
   const { title, content, author } = req.body;
+  const update = await Post.findByIdAndUpdate(
+    req.params.id,
+    {title,content,author},
+    {new: true},
+    );
 
   if (!title || !content || !author) {
     return res.status(400).json({
