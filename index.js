@@ -6,7 +6,9 @@ import { Post } from './models/index.js';
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "*"
+}));
 app.use(express.json()); 
 
 app.use('/notes', noteRouter);
