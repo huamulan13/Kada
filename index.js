@@ -23,7 +23,8 @@ app.get('/say:moma', (req, res) => {
     res.send ('ELO MOMAA!!')
 });
 
-app.get('/say:greeting', (req, res) => {
+// Contoh route dengan path parameter yang benar
+app.get('/say/:greeting', (req, res) => {
     const { greeting } = req.params;
     res.send(greeting);
 });
