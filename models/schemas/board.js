@@ -1,7 +1,7 @@
 import { Schema } from 'mongoose';
 
 const PostSchema = new Schema({
-  author: Sting,
+  author: String,
   title: String,
   content: String,
 }, {
