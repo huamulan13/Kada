@@ -4,12 +4,17 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import { Post } from './models/index.js'; 
 
+
+
+mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/?appName=Cluster0');
 const app = express();
+
+app.use(express.json()); 
+
 
 app.use(cors({
   origin: "*"
 }));
-app.use(express.json()); 
 
 app.use('/notes', noteRouter);
 
@@ -39,7 +44,7 @@ app.use((err, req, res, next) => {
     });
 });
 
-mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/?appName=Cluster0');
+
 
 app.listen(3000, () => {
     console.log('Server jalan di http://localhost:3000');
