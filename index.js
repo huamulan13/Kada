@@ -3,7 +3,7 @@ import cors from 'cors';
 import session from 'express-session';
 import passport from 'passport';
 import mongoose from 'mongoose';
-
+import cookieParser from 'cookie-parser';
 import authRouter from './routes/auth.js';
 import noteRouter from './routes/notes.js'; // Pastikan file ini ada
 import local from './strategies/local.js';
@@ -13,7 +13,8 @@ const app = express();
 // 1. Middleware Dasar
 app.use(cors());
 app.use(express.json()); // Supaya bisa baca JSON dari React [cite: 505]
-app.use(express.urlencoded({ extended: true })); // Supaya bisa baca data form [cite: 59]
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // 2. Setup Session (Wajib sebelum Passport) [cite: 217, 227]
 app.use(session({
@@ -42,7 +43,7 @@ app.use('/notes', noteRouter); // INI YANG TADI MATI, sekarang sudah aktif kemba
 
 // 6. Test Routes (Opsional)
 app.get('/', (req, res) => {
-  res.send('Server HANMATE APP Alena sudah aktif!');
+  res.send('Server Alena sudah aktif!');
 });
 
 // 7. Koneksi Database

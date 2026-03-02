@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { Post } from '../models/index.js';
+import { loginRequired } from '../middlewares/auth.js';
 
 const router = Router();
 
@@ -119,6 +120,11 @@ router.delete('/:id', async (req, res, next) => {
   } catch (e) {
     next(e);
   }
+});
+
+router.get('/', loginRequired, async (req, res) => {
+  const notes = await Note.find({ author: req.user._id }); 
+  res.json(notes);
 });
 
 export default router;

@@ -1,36 +1,20 @@
 import { Router } from 'express';
 import passport from 'passport';
-import { User } from '../models/user.js';
-import { getHash } from '../utils/hash.js';
+//import { User } from '../models/user.js';
+//import { getHash } from '../utils/hash.js';
+import { setUserToken } from '../utils/jwt.js';
 
 const router = Router();
 
-router.post('/join', async (req, res) => {
-  try {
-    const { email, name, password } = req.body; // 
-    
-    const exists = await User.findOne({ email });
-    if (exists) return res.status(400).json({ message: "Email sudah terdaftar" });
-
-    const pwHash = getHash(password);
-
-    await User.create({
-      email,
-      name,
-      password: pwHash
-    });
-
-    res.status(201).json({ result: 'success' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
-
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
+  // session: false karena kita pakai stateless JWT [cite: 16]
+  setUserToken(res, req.user); // Kirim token lewat cookie [cite: 31]
   res.json({ result: 'success', user: req.user });
 });
 
 export default router;
+
+// ----------
 
 // import { Router } from 'express';
 // import { User } from '../models/user.js';
