@@ -11,8 +11,10 @@ import './strategies/jwt.js';
 const app = express();
 
 app.use(cors({
-  origin: 'https://s8fljk.csb.app',
-  credentials: true 
+  origin: 'https://s8fljk.csb.app', // Pastikan ini persis sama dengan URL sandbox kamu
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 app.use(express.json());

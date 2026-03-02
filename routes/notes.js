@@ -32,15 +32,14 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-router.post('/', async (req, res, next) => {
-  const { title, content, author } = req.body;
-  const newNote = await Post.create({ title, content, author});
-  res.status(201).json(newNote);
+router.post('/', loginRequired, async (req, res, next) => {
+  const { title, content } = req.body;
+  const author = req.user._id; // Ambil otomatis dari token hasil loginRequired
 
-  if (!title || !content || !author) {
+  if (!title || !content) {
     return res.status(400).json({
       result: "fail",
-      message: "Title, content, dan author harus diisi"
+      message: "Title dan content harus diisi"
     });
   }
 

@@ -9,10 +9,11 @@ router.post('/login', passport.authenticate('local', { session: false }), (req, 
   const token = jwt.sign({ _id: req.user._id, name: req.user.name, email: req.user.email }, secret);
 
   res.cookie('token', token, { 
-    httpOnly: true,
-    sameSite: 'none',
-    secure: true
-  });
+  httpOnly: true,
+  sameSite: 'none', 
+  secure: true,     
+  maxAge: 24 * 60 * 60 * 1000 
+});
 
   res.json({ result: 'success', user: req.user });
 });
