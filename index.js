@@ -1,65 +1,34 @@
 import express from 'express';
 import cors from 'cors';
-import session from 'express-session';
-import passport from 'passport';
+import cookieParser from 'cookie-parser'; // [cite: 806]
 import mongoose from 'mongoose';
-import cookieParser from 'cookie-parser';
+import passport from 'passport';
+
 import authRouter from './routes/auth.js';
-import noteRouter from './routes/notes.js'; // Pastikan file ini ada
-import local from './strategies/local.js';
+import noteRouter from './routes/notes.js';
+import './strategies/local.js';
+import './strategies/jwt.js';
 
 const app = express();
 
-// 1. Middleware Dasar
-app.use(cors());
-app.use(express.json()); // Supaya bisa baca JSON dari React [cite: 505]
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
-
-// 2. Setup Session (Wajib sebelum Passport) [cite: 217, 227]
-app.use(session({
-  secret: 'secret_key',
-  resave: false,
-  saveUninitialized: true
+app.use(cors({
+  origin: '*',
+  credentials: true 
 }));
 
-// 3. Setup Passport [cite: 222, 223]
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser()); // Untuk membaca token dari cookie [cite: 806]
+
 app.use(passport.initialize());
-app.use(passport.session());
-passport.use(local); // Mendaftarkan strategi local [cite: 206]
 
-// 4. Session Management (Serialize & Deserialize) [cite: 232, 234]
-passport.serializeUser((user, done) => {
-  done(null, user);
-});
+// Router
+app.use('/auth', authRouter);
+app.use('/notes', noteRouter);
 
-passport.deserializeUser((obj, done) => {
-  done(null, obj);
-});
+mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/test');
 
-// 5. Registrasi Routes
-app.use('/auth', authRouter); // Untuk signup & login 
-app.use('/notes', noteRouter); // INI YANG TADI MATI, sekarang sudah aktif kembali
-
-// 6. Test Routes (Opsional)
-app.get('/', (req, res) => {
-  res.send('Server Alena sudah aktif!');
-});
-
-// 7. Koneksi Database
-const connectDB = async () => {
-  try {
-    // Memastikan skema koneksi benar sesuai pesan error sebelumnya
-    await mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/test?retryWrites=true&w=majority');
-    console.log('Terhubung ke MongoDB!');
-  } catch (e) {
-    console.log('Gagal koneksi MongoDB:', e.message);
-    process.exit(1);
-  }
-}
-connectDB();
-
-app.listen(3000, () => console.log('Server KADA jalan di port 3000'));
+app.listen(3000, () => console.log('Server JWT KADA jalan di port 3000'));
 
 // import express from 'express';
 // import cors from 'cors';

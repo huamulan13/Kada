@@ -7,9 +7,13 @@ import { setUserToken } from '../utils/jwt.js';
 const router = Router();
 
 router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
-  // session: false karena kita pakai stateless JWT [cite: 16]
-  setUserToken(res, req.user); // Kirim token lewat cookie [cite: 31]
+  setUserToken(res, req.user);
   res.json({ result: 'success', user: req.user });
+});
+
+router.get('/logout', (req, res) => {
+  res.cookie('token', null, { maxAge: 0 });
+  res.json({ result: 'success' });
 });
 
 export default router;
