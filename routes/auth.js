@@ -1,18 +1,24 @@
 import { Router } from 'express';
 import passport from 'passport';
-//import { User } from '../models/user.js';
-//import { getHash } from '../utils/hash.js';
-import { setUserToken } from '../utils/jwt.js';
+import jwt from 'jsonwebtoken';
 
 const router = Router();
+const secret = 'secret_key';
 
 router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
-  setUserToken(res, req.user);
+  const token = jwt.sign({ _id: req.user._id, name: req.user.name, email: req.user.email }, secret);
+
+  res.cookie('token', token, { 
+    httpOnly: true,
+    sameSite: 'none',
+    secure: true
+  });
+
   res.json({ result: 'success', user: req.user });
 });
 
 router.get('/logout', (req, res) => {
-  res.cookie('token', null, { maxAge: 0 });
+  res.cookie('token', null, { maxAge: 0 }); 
   res.json({ result: 'success' });
 });
 

@@ -1,9 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import cookieParser from 'cookie-parser'; // [cite: 806]
-import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import passport from 'passport';
-
+import mongoose from 'mongoose';
 import authRouter from './routes/auth.js';
 import noteRouter from './routes/notes.js';
 import './strategies/local.js';
@@ -13,22 +12,19 @@ const app = express();
 
 app.use(cors({
   origin: '*',
-  credentials: true 
+  // credentials: true 
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser()); // Untuk membaca token dari cookie [cite: 806]
-
+app.use(cookieParser());
 app.use(passport.initialize());
 
-// Router
 app.use('/auth', authRouter);
 app.use('/notes', noteRouter);
 
 mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/test');
 
-app.listen(3000, () => console.log('Server JWT KADA jalan di port 3000'));
+app.listen(3000, () => console.log('Server JWT Aktif!'));
 
 // import express from 'express';
 // import cors from 'cors';
