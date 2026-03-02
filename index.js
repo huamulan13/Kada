@@ -11,8 +11,8 @@ import './strategies/jwt.js';
 const app = express();
 
 app.use(cors({
-  origin: '*',
-  // credentials: true 
+  origin: 'https://s8fljk.csb.app',
+  credentials: true 
 }));
 
 app.use(express.json());
