@@ -10,7 +10,7 @@ router.post('/login', passport.authenticate('local', { session: false }), (req, 
 
   res.cookie('token', token, { 
   httpOnly: true,
-  sameSite: 'none', 
+  sameSite: 'false', 
   secure: true,     
   maxAge: 24 * 60 * 60 * 1000 
 });
