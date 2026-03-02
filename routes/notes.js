@@ -34,7 +34,7 @@ router.get('/:id', async (req, res, next) => {
 
 router.post('/', loginRequired, async (req, res, next) => {
   const { title, content } = req.body;
-  const author = req.user._id; // Ambil otomatis dari token hasil loginRequired
+  const author = req.user._id;
 
   if (!title || !content) {
     return res.status(400).json({
@@ -122,7 +122,7 @@ router.delete('/:id', async (req, res, next) => {
 });
 
 router.get('/', loginRequired, async (req, res) => {
-  const notes = await Note.find({ author: req.user._id }); 
+  const notes = await Post.find({ author: req.user._id }); // Gunakan Post
   res.json(notes);
 });
 

@@ -6,15 +6,13 @@ import mongoose from 'mongoose';
 import authRouter from './routes/auth.js';
 import noteRouter from './routes/notes.js';
 import './strategies/local.js';
-import './strategies/jwt.js';
+import './strategies/jwt.js'; 
 
 const app = express();
 
 app.use(cors({
-  origin: 'https://s8fljk.csb.app', // Pastikan ini persis sama dengan URL sandbox kamu
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  origin: 'https://s8fljk.csb.app', 
+  credentials: true 
 }));
 
 app.use(express.json());
@@ -24,9 +22,11 @@ app.use(passport.initialize());
 app.use('/auth', authRouter);
 app.use('/notes', noteRouter);
 
-mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/test');
+mongoose.connect('mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/test')
+  .then(() => console.log('MongoDB Connected!'))
+  .catch(err => console.log('DB Error:', err));
 
-app.listen(3000, () => console.log('Server JWT Aktif!'));
+app.listen(3000, () => console.log('Server JWT Aktif di port 3000!'));
 
 // import express from 'express';
 // import cors from 'cors';
