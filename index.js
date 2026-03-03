@@ -73,7 +73,7 @@ app.listen(3000, () => console.log('Server JWT Aktif di port 3000!'));
 // }
 // connectDB();
 
-// app.listen(3000, () => console.log('Server KADA jalan di port 3000'));
+// app.listen(3000, () => console.log(' KADA jalan di port 3000'));
 
 // // import express from 'express';
 // // import noteRouter from './routes/notes.js';

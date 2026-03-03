@@ -8,12 +8,12 @@ const secret = 'secret_key';
 router.post('/login', passport.authenticate('local', { session: false }), (req, res) => {
   const token = jwt.sign({ _id: req.user._id, name: req.user.name, email: req.user.email }, secret);
 
+  // Perbaikan di sini:
   res.cookie('token', token, { 
-  httpOnly: true,
-  sameSite: 'false', 
-  secure: true,     
-  maxAge: 24 * 60 * 60 * 1000 
-});
+    httpOnly: true,
+    secure: false,     // Set ke false karena di localhost biasanya tidak pakai HTTPS
+    sameSite: 'lax',   // Gunakan 'lax' (huruf kecil semua) untuk penggunaan di localhost
+  });
 
   res.json({ result: 'success', user: req.user });
 });
