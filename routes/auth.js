@@ -12,7 +12,8 @@ router.post('/login', passport.authenticate('local', { session: false }), (req, 
   res.cookie('token', token, { 
     httpOnly: true,
     secure: false,     // Set ke false karena di localhost biasanya tidak pakai HTTPS
-    sameSite: 'lax',   // Gunakan 'lax' (huruf kecil semua) untuk penggunaan di localhost
+    sameSite: 'lax',
+    maxAge: 24 * 60 * 60 * 1000
   });
 
   res.json({ result: 'success', user: req.user });
