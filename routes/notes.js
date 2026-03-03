@@ -1,130 +1,75 @@
-import { Router } from 'express';
-import { Post } from '../models/index.js';
-import { loginRequired } from '../middlewares/auth.js';
+import { Router } from "express";
+import Note from "../models/note.js";
+import {Post} from "../models/index.js";
 
 const router = Router();
-router.use(loginRequired);
 
-router.get('/', async (req, res, next) => {
-  try {
-    const posts = await Post.find({}).sort({ createdAt: -1 });
-    res.json(posts);
-  } catch (e) {
-    next(e);
-  }
+router.get("/", async( req, res, next) => {
+    try{
+        const notes = await Post.find();
+        res.json(notes);
+    } catch (e){
+        next(e);
+    }
 });
 
-router.get('/:id', async (req, res, next) => {
-  const { id } = req.params;
+router.get("/:id", async (req, res, next) => {
+    const id = req.params.id;
+    try{
+        console.log(id);
+        const note = await Post.findById(id); 
+        
+        res.json(note);
+    } catch (e){
+        next(e);
+    }
+});
 
-  try {
-    const post = await Post.findById(id);
-
-    if (!post) {
-      return res.status(404).json({
-        result: "fail",
-        message: "Post tidak ditemukan"
-      });
+router.post('/', async(req, res, next) => {
+    const { title, content, author } = req.body;
+    
+    if (!title || !content){
+        return res.status(400).json({
+            message: "Title and content are required",
+        });
     }
 
-    res.json(post);
-  } catch (e) {
-    next(e);
-  }
+    try {
+        const note = await Post.create({
+            title,
+            content,
+            author,
+        });
+        res.status(201).json(note);
+    
+    } catch (e) {
+        next(e);
+    } 
+
 });
 
-router.post('/', loginRequired, async (req, res, next) => {
-  const { title, content } = req.body;
-  const author = req.user._id;
+router.put("/:id", async (req, res, next) => {
+    try{
+        const note = await Post.findByIdAndUpdate(
+            req.params.id,
+            req.body,
+            {new: true}
+        
+        );
 
-  if (!title || !content) {
-    return res.status(400).json({
-      result: "fail",
-      message: "Title dan content harus diisi"
-    });
-  }
-
-  try {
-    const post = await Post.create({
-      title,
-      content,
-      author
-    });
-
-    res.status(201).json({
-      result: "success",
-      data: post
-    });
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.put('/:id', async (req, res, next) => {
-  const { id } = req.params;
-  const { title, content, author } = req.body;
-  const update = await Post.findByIdAndUpdate(
-    req.params.id,
-    {title,content,author},
-    {new: true},
-    );
-
-  if (!title || !content || !author) {
-    return res.status(400).json({
-      result: "fail",
-      message: "Title, content, dan author harus diisi"
-    });
-  }
-
-  try {
-    const updatedPost = await Post.findByIdAndUpdate(
-      id,
-      { title, content, author },
-      { new: true, runValidators: true }
-    );
-
-    if (!updatedPost) {
-      return res.status(404).json({
-        result: "fail",
-        message: "Post tidak ditemukan untuk diupdate"
-      });
+        res.json(note);
+    } catch (e){
+        next(e);
     }
-
-    res.json({
-      result: "success",
-      data: updatedPost
-    });
-  } catch (e) {
-    next(e);
-  }
 });
 
-router.delete('/:id', async (req, res, next) => {
-  const { id } = req.params;
-
-  try {
-    const deletedPost = await Post.findByIdAndDelete(id);
-
-    if (!deletedPost) {
-      return res.status(404).json({
-        result: "fail",
-        message: "Post tidak ditemukan untuk dihapus"
-      });
+router.delete("/:id", async(req, res, next) => {
+    try {
+        await Post.findByIdAndDelete(req.params.id);
+        res.json({result: "success"});
+    } catch (e){
+        next(e);
     }
-
-    res.json({
-      result: "success",
-      message: "Post berhasil dihapus",
-      data: deletedPost
-    });
-  } catch (e) {
-    next(e);
-  }
-});
-
-router.get('/', loginRequired, async (req, res) => {
-  const notes = await Post.find({ author: req.user._id }); // Gunakan Post
-  res.json(notes);
 });
 
 export default router;

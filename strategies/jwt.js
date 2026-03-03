@@ -3,9 +3,8 @@ import { Strategy as JwtStrategy } from 'passport-jwt';
 
 const cookieExtractor = (req) => {
   let token = null;
-  if (req && req.cookies) {
+  if (req && req.cookies)
     token = req.cookies['token']; 
-  }
   return token;
 };
 
