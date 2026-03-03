@@ -3,6 +3,7 @@ import { Post } from '../models/index.js';
 import { loginRequired } from '../middlewares/auth.js';
 
 const router = Router();
+router.use(loginRequired);
 
 router.get('/', async (req, res, next) => {
   try {
