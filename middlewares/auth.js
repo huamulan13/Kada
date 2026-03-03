@@ -9,8 +9,9 @@ export const loginRequired = (req, res, next) => {
   }
 
   try {
-    const user = jwt.verify(token, secret); 
+    const user = jwt.verify(token, 'secret_key'); 
     req.user = user; 
+    next();
   } catch (err) {
     res.status(403).json({ message: "Token tidak valid" });
   }
