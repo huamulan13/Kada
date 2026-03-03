@@ -4,6 +4,7 @@ import 'dotenv/config';
 export const verifyToken = (req, res, next) => {
   console.log("Headers yang diterima", req.headers);
   const token = req.cookies.token;
+  // const token = req.headers.authorization;
   
   if (!token) {
     return res.status(401).json({ message: "Silakan login terlebih dahulu" });

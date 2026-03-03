@@ -2,6 +2,7 @@ import express from 'express';
 import { User } from '../models/index.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import sendEmail from '../utils/sendemail.js';
 
 const router = express.Router();
 
@@ -45,6 +46,32 @@ router.post('/login', async (req, res) => {
   } catch (err) {
     console.error("Login Error:", err);
     res.status(500).json({ error: "Server Error" });
+  }
+});
+
+function generateRandomPassword() {
+  return Math.floor(Math.random() * (10 ** 8)).toString().padStart(8, '0');
+}
+
+router.post('/reset-password', async (req, res) => {
+  const { email } = req.body;
+  try {
+    const randomPassword = generateRandomPassword();
+    const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
+    const user = await User.findOneAndUpdate(
+      { email },
+      { password: hashedPassword, passwordReset: true },
+      { new: true }
+    );
+
+    if (!user) return res.status(404).json({ error: "User tidak ditemukan" });
+
+    await sendEmail(email, 'Password Reset KADA', `Password baru kamu: ${randomPassword}`);
+    
+    res.json({ result: 'success', message: "Password baru dikirim ke email!" });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 });
 
