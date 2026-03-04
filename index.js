@@ -6,12 +6,16 @@ import cookieParser from 'cookie-parser';
 import { verifyToken } from './middlewares/auth.js'; 
 import authRoutes from './routes/auth.js';
 import notesRoutes from './routes/notes.js';
+import paymentRoutes from './midtrans.js';
+// import passport from 'passport';
+// import google from './strategies/google.js';
 
 const app = express();
 
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true })); 
 app.use(cookieParser());
+// passport.use(google);
 
 app.use(cors({ 
   origin: true, 
@@ -26,6 +30,7 @@ app.use('/auth', authRoutes);
 app.get('/', (req, res) => res.send(' Halooo'));
 app.get('/about', (req, res) => res.send(' About Me'));
 app.use('/notes', verifyToken, notesRoutes);
+app.use('/payment', paymentRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err.stack);

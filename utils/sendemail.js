@@ -14,7 +14,7 @@ const sendEmail = async (email, subject, text) => {
     });
 
     await transporter.sendMail({
-      from: "KADA App <kmediario13@gmail.com>",
+      from: "Lenkada App <kmediario13@gmail.com>",
       to: email,
       subject: subject,
       text: text,

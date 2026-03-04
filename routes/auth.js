@@ -52,7 +52,6 @@ router.post('/login', async (req, res) => {
 function generateRandomPassword() {
   return Math.floor(Math.random() * (10 ** 8)).toString().padStart(8, '0');
 }
-
 router.post('/reset-password', async (req, res) => {
   const { email } = req.body;
   try {
@@ -67,9 +66,9 @@ router.post('/reset-password', async (req, res) => {
 
     if (!user) return res.status(404).json({ error: "User tidak ditemukan" });
 
-    await sendEmail(email, 'Password Reset KADA', `Password baru kamu: ${randomPassword}`);
+    await sendEmail(email, 'Password Reset Lenkada', `Password baru kamu: ${randomPassword}`);
     
-    res.json({ result: 'success', message: "Password baru dikirim ke email!" });
+    res.json({ result: 'success', message: "udah dikirim nih brok!" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -107,5 +106,24 @@ router.post('/join', async (req, res) => {
     res.status(500).json({ error: "Terjadi kesalahan server" });
   }
 });
+
+// router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+// router.get('/google/callback', passport.authenticate('google', { session: false }), (req, res) => {
+//     const secret = process.env.JWT_SECRET || 'secret_key';
+
+//     const token = jwt.sign(
+//         { _id: req.user._id, name: req.user.name, email: req.user.email },
+//         secret
+//     );
+
+//     res.cookie('token', token, {
+//         httpOnly: true,
+//         secure: true,
+//         sameSite: 'none',
+//     });
+
+//     res.redirect('http://localhost:3000'); 
+// });
 
 export default router;
