@@ -18,7 +18,7 @@ app.use(cookieParser());
 // passport.use(google);
 
 app.use(cors({ 
-  origin: true, 
+  origin: "https://codesandbox.io/p/sandbox/h8rd4s", 
   credentials: true 
 }));
 
