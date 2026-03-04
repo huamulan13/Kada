@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 import { verifyToken } from './middlewares/auth.js'; 
 import authRoutes from './routes/auth.js';
 import notesRoutes from './routes/notes.js';
-import paymentRoutes from './midtrans.js';
+import paymentRoutes from './routes/payment.js';
 // import passport from 'passport';
 // import google from './strategies/google.js';
 

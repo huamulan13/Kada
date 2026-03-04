@@ -9,7 +9,13 @@ const snap = new midtransClient.Snap({
     clientKey: process.env.MIDTRANS_CLIENT_KEY
 });
 
-router.post('/checkout', async (req, res) => {
+const coreApi = new midtransClient.CoreApi({
+    isProduction: false,
+    serverKey: process.env.MIDTRANS_SERVER_KEY,
+    clientKey: process.env.MIDTRANS_CLIENT_KEY,
+});
+
+export const createTransaction = async (req, res) =>{
     try {
         const { amount, first_name, email } = req.body;
 
@@ -18,10 +24,10 @@ router.post('/checkout', async (req, res) => {
                 order_id: "ORDER-" + Date.now(),
                 gross_amount: amount
             },
-            credit_card: { "secure": true },
+            credit_card: { secure: true },
             customer_details: {
-                first_name: first_name,
-                email: email
+                first_name,
+                email
             }
         };
 
@@ -37,6 +43,6 @@ router.post('/checkout', async (req, res) => {
         console.error("Error createTransaction:", error); 
         return res.status(500).json({ message: "Gagal membuat transaksi" }); 
     }
-});
+};
 
 export default router;
