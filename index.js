@@ -17,10 +17,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 // passport.use(google);
 
-app.use(cors({ 
-  origin: "https://codesandbox.io/p/sandbox/h8rd4s", 
-  credentials: true 
-}));
+// app.use(cors({ 
+//   origin: "http://localhost:5173/"
+// }));
+
+app.use(cors())
 
 mongoose.connect("mongodb+srv://kmediario13_db_user:alena@cluster0.xf879y1.mongodb.net/test")
 .then(() => console.log("✅ Connect DB"))
